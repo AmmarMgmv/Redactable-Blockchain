@@ -65,9 +65,10 @@ class VotingSystem:
         """Counts votes for a proposal and checks if the modification is approved"""
         if proposal_id not in self.active_proposals:
             print(f"Invalid proposal ID: {proposal_id}")
-            return False
+            return False, None
 
         proposal = self.active_proposals[proposal_id]
+        proposer = proposal["proposer"]
         total_voters = len(proposal["voters"])
         yes_votes = sum(proposal["votes"].values())
         no_votes = total_voters - yes_votes
@@ -79,7 +80,7 @@ class VotingSystem:
             proposal["status"] = "rejected"
             self.vote_history.append(proposal)
             del self.active_proposals[proposal_id]
-            return False
+            return False, None
 
         print(f"\nVote Result for Proposal {proposal_id} (Modifying Block {proposal['block_index']}):")
         print(f"YES votes: {yes_votes}")
@@ -94,16 +95,16 @@ class VotingSystem:
                 proposal["status"] = "approved"
                 self.vote_history.append(proposal)
                 del self.active_proposals[proposal_id]
-                return selected_editor
+                return proposer, selected_editor
             else:
                 print("Error: No editor selected!")
-                return False
+                return False, None
         else:
             print("Proposal REJECTED! The modification will NOT be applied.")
             proposal["status"] = "rejected"
             self.vote_history.append(proposal)
             del self.active_proposals[proposal_id]
-            return False
+            return False, None
     
     def run_editor_selection(self):
         """Handles editor selection using the Time Capsule Mechanism"""

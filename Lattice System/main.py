@@ -29,12 +29,15 @@ if __name__ == "__main__":
 
     # Print modification history
     print(f"\nModification History of Block {block_to_modify.index}:")
-    for mod in block_to_modify.modification_history:
-        print(f"Proposed by: {mod['proposer']}")
-        print(f"Modified by: {mod['modifier']}")
-        print(f"Time: {mod['timestamp']}")
-        print(f"Previous Data: {mod['previous_data']}")
-        print(f"New Data: {mod['new_data']}\n")
+    if not block_to_modify.modification_history:
+        print("No modifications recorded.")
+    else:
+        for mod in block_to_modify.modification_history:
+            print(f"🔹 Proposed by: {mod['proposer']}")
+            print(f"🔹 Modified by: {mod['modifier']}")
+            print(f"🔹 Time: {mod['timestamp']}")
+            print(f"🔹 Previous Data: {mod['previous_data']}")
+            print(f"🔹 New Data: {mod['new_data']}\n")
 
     # Check blockchain validity
     print("\nBlockchain Valid:", blockchain.is_chain_valid())
